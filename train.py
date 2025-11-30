@@ -13,9 +13,9 @@ from dataset import LeafDataset
 
 def train_pix2pix(
     train_dir,
-    epochs=100,
+    epochs=300,
     batch_size=4,
-    lr=0.0002,
+    lr=0.0001,
     device=None,
     save_dir='checkpoints'
 ):
