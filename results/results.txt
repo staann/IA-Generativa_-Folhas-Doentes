@@ -1,0 +1,19 @@
+==================================================
+RESULTADOS DA AVALIAÇÃO
+==================================================
+
+Acurácia: 0.9067
+Precisão: 0.9057
+Recall: 0.9600
+F1-Score: 0.9320
+
+Matriz de Confusão:
+  Verdadeiro Negativo (TN): 40
+  Falso Positivo (FP): 10
+  Falso Negativo (FN): 4
+  Verdadeiro Positivo (TP): 96
+
+CRI Médio - Folhas Saudáveis: 0.004879 ± 0.000373
+CRI Médio - Folhas Doentes: 0.006314 ± 0.000826
+Threshold utilizado: 0.005178
+  (Otimizado automaticamente)

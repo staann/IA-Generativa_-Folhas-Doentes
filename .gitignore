@@ -4,7 +4,7 @@ Healthy_Test50/
 Healthy_Train50/
 
 # --- Ignorar resultados gerados ---
-results/
+#results/
 
 # --- Ignorar ambiente virtual e cache ---
 venv/
