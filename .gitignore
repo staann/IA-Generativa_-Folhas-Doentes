@@ -1,0 +1,16 @@
+# --- Ignorar pastas pesadas do Dataset ---
+Disease_Test100/
+Healthy_Test50/
+Healthy_Train50/
+
+# --- Ignorar resultados gerados ---
+results/
+
+# --- Ignorar ambiente virtual e cache ---
+venv/
+__pycache__/
+*.pyc
+
+# --- Ignorar arquivos de modelo (se houver soltos) ---
+*.pth
+*.h5
