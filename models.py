@@ -1,6 +1,5 @@
 """
 Modelo pix2pix para geração de folhas saudáveis
-Baseado no artigo: Image-based plant disease diagnosis with unsupervised anomaly detection
 """
 import torch
 import torch.nn as nn

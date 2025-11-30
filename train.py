@@ -99,7 +99,7 @@ def train_pix2pix(
         for batch in pbar:
             real_images = batch['image'].to(device)
             
-            # ============ Treinar Discriminador ============
+            # Treina Discriminador
             optimizer_D.zero_grad()
             
             # Imagens reais (par de imagens idênticas para folhas saudáveis)
@@ -117,7 +117,7 @@ def train_pix2pix(
             loss_D.backward()
             optimizer_D.step()
             
-            # ============ Treinar Gerador ============
+            # Treinar Gerador
             optimizer_G.zero_grad()
             
             # Loss adversarial
@@ -125,7 +125,7 @@ def train_pix2pix(
             pred_fake = discriminator(real_images, fake_images)
             loss_GAN = criterion_GAN(pred_fake, torch.ones_like(pred_fake))
             
-            # Loss de pixel (L1)
+            # L1
             loss_pixel = criterion_pixel(fake_images, real_images) * 100
             
             # Loss total
@@ -146,7 +146,7 @@ def train_pix2pix(
         
         print(f"Época {epoch+1}/{epochs} - Loss_G: {avg_loss_G:.4f}, Loss_D: {avg_loss_D:.4f}")
         
-        # Salvar checkpoint a cada 10 épocas
+        # Salvar checkpoint a cada 10 épochs
         if (epoch + 1) % 10 == 0:
             checkpoint = {
                 'epoch': epoch + 1,
@@ -158,7 +158,7 @@ def train_pix2pix(
             torch.save(checkpoint, os.path.join(save_dir, f'checkpoint_epoch_{epoch+1}.pth'))
             print(f"Checkpoint salvo: checkpoint_epoch_{epoch+1}.pth")
     
-    # Salvar modelo final
+    # Salva modelo final
     torch.save(generator.state_dict(), os.path.join(save_dir, 'generator_final.pth'))
     torch.save(discriminator.state_dict(), os.path.join(save_dir, 'discriminator_final.pth'))
     print("Treinamento concluído!")

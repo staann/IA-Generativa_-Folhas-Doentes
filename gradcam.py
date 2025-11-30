@@ -1,6 +1,5 @@
 """
-Implementação de Grad-CAM para visualização de explicações
-Baseado em: Grad-CAM: Visual Explanations from Deep Networks
+Implementação da Grad-CAM
 """
 import torch
 import torch.nn.functional as F
@@ -11,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 class GradCAM:
-    """Classe para gerar visualizações Grad-CAM"""
+   #Classe para gerar visualizações Grad-CAM
     
     def __init__(self, model, target_layer):
         """
@@ -130,15 +129,11 @@ def create_gradcam_for_generator(generator, device):
     """
     Cria instância de GradCAM para o gerador
     
-    Args:
-        generator: modelo gerador
-        device: dispositivo (cuda ou cpu)
-    
     Returns:
         gradcam: instância de GradCAM
     """
-    # Usar a última camada convolucional antes da saída
-    # No caso do U-Net, podemos usar uma das camadas do decoder
+    # Usa a última camada convolucional antes da saída
+    # U-Net pod usar uma da camadas do decoder
     target_layer = generator.up7.model[0]  # Primeira camada do último upsampling
     
     return GradCAM(generator, target_layer)

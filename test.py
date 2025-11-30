@@ -33,14 +33,14 @@ def evaluate_model(
         threshold: threshold para classificação de anomalia
         output_dir: diretório para salvar resultados
     """
-    # Detectar dispositivo automaticamente se não especificado
+    # Detecta o dispositivo se não especificado
     if device is None:
         if torch.cuda.is_available():
             device = 'cuda'
         else:
             device = 'cpu'
     
-    # Informações sobre o dispositivo
+    # Infos sobre o dispositivo
     print("="*60)
     print("CONFIGURAÇÃO DO DISPOSITIVO")
     print("="*60)
@@ -72,7 +72,7 @@ def evaluate_model(
         print("Aviso: Não foi possível criar GradCAM, continuando sem ele...")
         use_gradcam = False
     
-    # Listar todas as imagens
+    # Lista todas as imagens
     healthy_images = []
     disease_images = []
     
@@ -95,7 +95,7 @@ def evaluate_model(
         'disease': []
     }
     
-    # Testar folhas saudáveis
+    # Testa as folha saudáveis
     print("\nTestando folhas saudáveis...")
     for img_path in tqdm(healthy_images):
         is_anomaly, cri, anomaly_map, reconstructed = detect_anomaly(
@@ -109,7 +109,7 @@ def evaluate_model(
             'reconstructed': reconstructed
         })
     
-    # Testar folhas doentes
+    # Testa as folha doentes
     print("\nTestando folhas doentes...")
     for img_path in tqdm(disease_images):
         is_anomaly, cri, anomaly_map, reconstructed = detect_anomaly(
@@ -123,7 +123,7 @@ def evaluate_model(
             'reconstructed': reconstructed
         })
     
-    # Calcular métricas
+    # Calcula mtricas
     y_true = [0] * len(results['healthy']) + [1] * len(results['disease'])
     y_pred = [int(r['is_anomaly']) for r in results['healthy']] + \
              [int(r['is_anomaly']) for r in results['disease']]
@@ -134,17 +134,17 @@ def evaluate_model(
     f1 = f1_score(y_true, y_pred)
     cm = confusion_matrix(y_true, y_pred)
     
-    # Estatísticas de CRI
+    # Estatistica de CRI
     cri_healthy = [r['cri'] for r in results['healthy']]
     cri_disease = [r['cri'] for r in results['disease']]
     
-    # Calcular threshold ótimo se o threshold fornecido não for adequado
+    # Calcular threshold bom se o threshold fornecido não for adequado
     mean_healthy = np.mean(cri_healthy)
     mean_disease = np.mean(cri_disease)
     std_healthy = np.std(cri_healthy)
     std_disease = np.std(cri_disease)
     
-    # Se o threshold fornecido está muito alto ou muito baixo, calcular um ótimo
+    # Se o threshold fornecido está muito alto ou muito baixo, calcular um bom
     optimal_threshold = threshold
     threshold_was_optimized = False
     
@@ -186,14 +186,14 @@ def evaluate_model(
         print(f"   Threshold ótimo calculado: {optimal_threshold:.6f} (F1-Score: {best_f1:.4f})")
         print(f"   Recalculando métricas com threshold ótimo...\n")
         
-        # Recalcular predições com threshold ótimo
+        # Recalcula prediçõe com threshold bm
         y_pred = []
         for r in results['healthy']:
             y_pred.append(1 if r['cri'] > optimal_threshold else 0)
         for r in results['disease']:
             y_pred.append(1 if r['cri'] > optimal_threshold else 0)
         
-        # Recalcular métricas com threshold ótimo
+        # Recalcula métricas com threshold bom
         accuracy = accuracy_score(y_true, y_pred)
         precision = precision_score(y_true, y_pred, zero_division=0)
         recall = recall_score(y_true, y_pred, zero_division=0)
@@ -222,7 +222,7 @@ def evaluate_model(
         print(f"  (Otimizado automaticamente)")
     print("="*50)
     
-    # Salvar visualizações (amostras)
+    # Salva visu
     print("\nSalvando visualizações...")
     n_samples = min(10, len(results['healthy']), len(results['disease']))
     
@@ -236,7 +236,7 @@ def evaluate_model(
             os.path.join(output_dir, 'visualizations', f'healthy_{i}.png')
         )
         
-        # GradCAM para folha saudável (se disponível)
+        # GradCAM para folha saudável
         if use_gradcam:
             try:
                 from torchvision import transforms
@@ -266,7 +266,7 @@ def evaluate_model(
             os.path.join(output_dir, 'visualizations', f'disease_{i}.png')
         )
         
-        # GradCAM para folha doente (se disponível)
+        # GradCAM pRA folha doente
         if use_gradcam:
             try:
                 from torchvision import transforms
@@ -287,7 +287,7 @@ def evaluate_model(
             except:
                 pass
     
-    # Plotar distribuição de CRI
+    # Plota distrib de CRI
     plt.figure(figsize=(10, 6))
     plt.hist(cri_healthy, bins=30, alpha=0.5, label='Folhas Saudáveis', color='green')
     plt.hist(cri_disease, bins=30, alpha=0.5, label='Folhas Doentes', color='red')
@@ -300,7 +300,7 @@ def evaluate_model(
     plt.savefig(os.path.join(output_dir, 'cri_distribution.png'), dpi=150, bbox_inches='tight')
     plt.close()
     
-    # Salvar resultados em arquivo
+    # Salva resultado em arquivo
     results_file = os.path.join(output_dir, 'results.txt')
     with open(results_file, 'w', encoding='utf-8') as f:
         f.write("="*50 + "\n")
