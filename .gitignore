@@ -1,7 +1,4 @@
 # --- Ignorar pastas pesadas do Dataset ---
-Disease_Test100/
-Healthy_Test50/
-Healthy_Train50/
 
 # --- Ignorar resultados gerados ---
 #results/
